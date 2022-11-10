@@ -37,11 +37,13 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const userExist = await user.findOne({ email });
+        const userExist = await user.findOne({
+            where: {
+                email
+            },
+        });
 
         if (userExist) {
-            console.log('entered passowrd:', password);
-            console.log('database password:', userExist.password);
             const isSame = await bcrypt.compare(password, userExist.password);
 
             if (isSame) {
@@ -54,7 +56,7 @@ const login = async (req, res) => {
                 return res.status(401).json({ error: "Invalid Password" });
             }
         } else {
-            return res.status(401).json({ error: "Authentication failed" });
+            return res.status(401).json({ error: "Authentication failed, User doesn't exist" });
         }
     } catch (error) {
         console.log(error);
