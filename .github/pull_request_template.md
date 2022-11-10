@@ -2,7 +2,9 @@
 
 Please include a brief description of the pull request you want to raise. 
 
-# Description of tasks that were expected to be completed
+
+# Description of tasks were expected to be completed
+
 
 List all the tasks and sub-tasks that were assigned to you or that you assigned yourself. Make sure you check every completed task.
 
@@ -23,4 +25,4 @@ The number of commits should not exceed **2 commits**. In case they are more tha
 - [ ] I have commented on my code, particularly in hard-to-understand areas
 - [ ] My code generates no warnings
 - [ ] There are no vulnerabilities 
-- [ ] There are no conflicts with the main branch
+
