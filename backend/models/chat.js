@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Chat.belongsToMany(models.user, {
-        through: 'userchat',
+        through: 'Userchat',
         foreignKey: 'chatId',
         as: 'users',
       });
@@ -24,8 +24,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Chat.init({
     chatName: DataTypes.STRING,
-    isGroupChat: DataTypes.BOOLEAN,
-    groupAdmin: DataTypes.INTEGER
+    isGroupChat: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    groupAdmin: DataTypes.INTEGER,
+    chatOwner: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Chat',

@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       user.belongsToMany(models.Chat, {
-        through: 'userRoom',
+        through: 'Userchat',
         foreignKey: 'userId',
-        as: 'rooms',
+        as: 'chats',
       });
 
       user.hasMany(models.Message, {

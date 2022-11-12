@@ -1,5 +1,6 @@
 const express = require("express");
 const model = require('../models')
+const jwt = require('jsonwebtoken')
 
 const { user } = model
 
@@ -19,6 +20,35 @@ const existingUser = async (req, res, next) => {
     }
 };
 
+const protect = async (req, res, next) => {
+    let token;
+
+    if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer")
+    ) {
+        try {
+            token = req.headers.authorization.split(" ")[1];
+
+            //decodes token id
+            const decoded = jwt.verify(token, process.env.secretKey);
+
+            req.user = decoded
+
+
+
+            next();
+        } catch (error) {
+            res.status(401).json({ error: error.message })
+        }
+    }
+
+    if (!token) {
+        res.status(401).json({ error: "Not authorized, no token" })
+    }
+};
+
 module.exports = {
     existingUser,
+    protect
 };

@@ -10,12 +10,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       chatName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       isGroupChat: {
         type: Sequelize.BOOLEAN
       },
       groupAdmin: {
+        type: Sequelize.INTEGER
+      },
+      chatOwner: {
         type: Sequelize.INTEGER
       },
       createdAt: {
