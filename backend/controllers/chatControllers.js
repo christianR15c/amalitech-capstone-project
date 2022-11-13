@@ -7,24 +7,28 @@ const createChat = async (req, res) => {
 
     const chatOwner = req.user.id
 
+    let chatNameInfo = await user.findByPk(userId)
+    if (!chatNameInfo) return res.status(400).json({ error: "user not found" })
+
+    const chatName = chatNameInfo.name
+
     if (chatOwner !== userId) {
         Chat.findOne({
-            where: { chatName: JSON.stringify(userId), chatOwner },
+            where: { chatName, chatOwner },
         })
             .then((exist) => {
-                if (exist)
-                    res
-                        .status(400)
-                        .json({ error: `chat already exist` });
+                if (exist) {
+                    return res
+                        .status(200)
+                        .json(exist);
+
+                }
                 else {
                     Chat.create({
-                        chatName: userId,
+                        chatName,
                         chatOwner
                     }).then((chat) =>
-                        res.status(201).json({
-                            message: `chat has created succssfully`,
-                            chat,
-                        })
+                        res.status(201).json(chat)
                     );
                 }
             })
@@ -99,7 +103,14 @@ const getOneOnOneChats = async (req, res) => {
 const getAllGroupChats = async (req, res) => {
     const loggedInUser = req.user.id
     const chats = await Chat.findAll({
-        where: { isGroupChat: true, groupAdmin: loggedInUser }
+        where: { isGroupChat: true, groupAdmin: loggedInUser }, include: {
+            model: user,
+            as: 'users',
+            attributes: ['name', 'email'],
+            through: {
+                attributes: ['userId'],
+            },
+        }
     })
 
     if (chats.length > 0) return res.status(200).json(chats)
