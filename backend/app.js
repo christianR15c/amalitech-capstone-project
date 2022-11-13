@@ -12,8 +12,8 @@ const PORT = process.env.PORT || 5000
 app.use(logger('dev')); // log requests to the console
 
 // Parse incoming requests data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use('/api/users', userRoutes)
 app.use('/api/chat', chatRoutes)

@@ -5,7 +5,7 @@ const Sequelize = require('sequelize')
 const generateToken = require("../helpers/generateToken")
 const Op = Sequelize.Op
 
-const { user } = model
+const { user, userchat } = model
 
 const signup = async (req, res) => {
     try {
@@ -17,11 +17,12 @@ const signup = async (req, res) => {
             pic,
             password: await bcrypt.hash(password, 10),
         };
+
         const newUser = await user.create(data);
 
         if (newUser) {
 
-            return res.status(201).json(newUser);
+            res.status(200).json(newUser);
         }
         return res.status(409).json({ error: "Details are not correct" });
 
@@ -77,8 +78,22 @@ const searchUsers = async (req, res) => {
     }
 }
 
+
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await user.findAll()
+        if (users.length === 0) {
+            res.status(200).json({ message: 'NO users found' })
+        }
+        res.status(200).json(users)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     signup,
     login,
-    searchUsers
+    searchUsers,
+    getAllUsers
 };
